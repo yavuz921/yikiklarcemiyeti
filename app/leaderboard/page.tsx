@@ -57,7 +57,7 @@ export default function LeaderboardPage() {
           />
           <div>
             <div style={{ fontSize: 11, color: '#f0b429', fontWeight: 800, letterSpacing: 2, marginBottom: 4 }}>🥇 BİRİNCİYE ÖDÜL</div>
-            <div style={{ fontSize: 20, fontWeight: 800, color: '#e8edf5' }}>4000 Çekim Vozol</div>
+            <div style={{ fontSize: 20, fontWeight: 800, color: '#e8edf5' }}>40000 Çekim Vozol</div>
           </div>
         </div>
 
