@@ -182,7 +182,7 @@ export default function HomePage() {
           {/* Nickname */}
           <div style={{ flex: 1 }}>
             <div style={{ fontSize: 11, color: '#4a6090', fontWeight: 700, letterSpacing: 1, marginBottom: 8 }}>
-              RUMUZAN
+              NİCKNAME
             </div>
             <input
               type="text"
@@ -266,9 +266,6 @@ export default function HomePage() {
           {loading ? 'Giriliyor...' : '🏆  Tahmine Başla'}
         </button>
 
-        <p style={{ textAlign: 'center', fontSize: 11, color: '#1e3060', marginTop: 14, marginBottom: 0 }}>
-          Şifre yok · Kayıt yok · Sadece isim yaz ve başla
-        </p>
       </div>
 
       {/* Alt linkler */}
