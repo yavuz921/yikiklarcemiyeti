@@ -20,7 +20,7 @@ export default function HomePage() {
   function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0]
     if (!file) return
-    if (file.size > 2 * 1024 * 1024) { setError('Görsel 2MB\'dan küçük olmalı.'); return }
+    if (file.size > 10 * 1024 * 1024) { setError('Görsel 10MB\'dan küçük olmalı.'); return }
     setAvatarFile(file)
     setAvatarPreview(URL.createObjectURL(file))
   }
@@ -207,8 +207,8 @@ export default function HomePage() {
           </div>
         </div>
 
-        {/* Emoji seçici */}
-        <div style={{ marginBottom: 24 }}>
+        {/* Emoji seçici - fotoğraf yüklenmemişse göster */}
+        <div style={{ marginBottom: 24, display: avatarPreview ? 'none' : 'block' }}>
           <div style={{ fontSize: 11, color: '#4a6090', fontWeight: 700, letterSpacing: 1, marginBottom: 8, display: 'flex', alignItems: 'center', gap: 8 }}>
             EMOJİN
             <span style={{ fontSize: 20, lineHeight: 1 }}>{selectedEmoji}</span>
