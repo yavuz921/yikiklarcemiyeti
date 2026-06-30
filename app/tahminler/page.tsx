@@ -5,156 +5,180 @@ import { supabase } from '@/lib/supabase'
 import { Match, Player, Prediction } from '@/lib/types'
 import Link from 'next/link'
 
-const FLAGS: Record<string, string> = {
-  'Germany': '🇩🇪', 'Paraguay': '🇵🇾', 'France': '🇫🇷', 'Sweden': '🇸🇪',
-  'South Africa': '🇿🇦', 'Canada': '🇨🇦', 'Netherlands': '🇳🇱', 'Morocco': '🇲🇦',
-  'Portugal': '🇵🇹', 'Croatia': '🇭🇷', 'Spain': '🇪🇸', 'Austria': '🇦🇹',
-  'United States': '🇺🇸', 'Bosnia & Herzegovina': '🇧🇦', 'Belgium': '🇧🇪', 'Senegal': '🇸🇳',
-  'Brazil': '🇧🇷', 'Japan': '🇯🇵', 'Ivory Coast': '🇨🇮', 'Norway': '🇳🇴',
-  'Mexico': '🇲🇽', 'Ecuador': '🇪🇨', 'England': '🏴󠁧󠁢󠁥󠁮󠁧󠁿', 'DR Congo': '🇨🇩',
-  'Argentina': '🇦🇷', 'Cape Verde': '🇨🇻', 'Australia': '🇦🇺', 'Egypt': '🇪🇬',
-  'Switzerland': '🇨🇭', 'Algeria': '🇩🇿', 'Colombia': '🇨🇴', 'Ghana': '🇬🇭',
-}
-
 const ROUND_LABELS: Record<string, string> = {
   r32: 'Round of 32', r16: 'Round of 16', qf: 'Çeyrek Final', sf: 'Yarı Final', final: 'Final'
 }
+const ROUNDS = ['r32', 'r16', 'qf', 'sf', 'final']
 
 export default function TahminlerPage() {
   const [players, setPlayers] = useState<Player[]>([])
   const [matches, setMatches] = useState<Match[]>([])
   const [predictions, setPredictions] = useState<Prediction[]>([])
-  const [tournamentLocked, setTournamentLocked] = useState(false)
   const [loading, setLoading] = useState(true)
-  const [selectedRound, setSelectedRound] = useState<string>('r32')
+  const [selected, setSelected] = useState<Player | null>(null)
+  const [selectedRound, setSelectedRound] = useState('r32')
 
-  useEffect(() => {
-    loadAll()
-  }, [])
+  useEffect(() => { loadAll() }, [])
 
   async function loadAll() {
-    const [{ data: pls }, { data: mts }, { data: preds }, { data: settings }] = await Promise.all([
-      supabase.from('players').select('*').eq('is_locked', true),
+    const [{ data: pls }, { data: mts }, { data: preds }] = await Promise.all([
+      supabase.from('players').select('*').eq('is_locked', true).order('created_at'),
       supabase.from('matches').select('*').order('id'),
       supabase.from('predictions').select('*'),
-      supabase.from('app_settings').select('tournament_locked').eq('id', 1).single(),
     ])
     if (pls) setPlayers(pls)
     if (mts) setMatches(mts)
     if (preds) setPredictions(preds)
-    if (settings) setTournamentLocked(settings.tournament_locked)
     setLoading(false)
   }
 
-  if (!tournamentLocked) {
+  function getPred(playerId: string, matchId: number) {
+    return predictions.find(p => p.player_id === playerId && p.match_id === matchId)?.predicted_winner || null
+  }
+
+  if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center px-4">
-        <div className="text-center">
-          <div className="text-5xl mb-4">🔒</div>
-          <h1 className="text-2xl font-bold text-white mb-2">Henüz Görüntülenemez</h1>
-          <p className="text-gray-400 mb-6">Tahminler turnuva başladıktan sonra herkes için açılır.</p>
-          <Link href="/" className="text-blue-400 hover:text-white transition">← Ana Sayfaya Dön</Link>
-        </div>
+      <div style={{ minHeight: '100vh', background: '#060d1f', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <div style={{ color: '#4a6090' }}>Yükleniyor...</div>
       </div>
     )
   }
 
-  const rounds = ['r32', 'r16', 'qf', 'sf', 'final']
-  const roundMatches = matches.filter(m => m.round === selectedRound)
-  const lockedPlayers = players.filter(p => p.is_locked)
-
-  function getPrediction(playerId: string, matchId: number) {
-    return predictions.find(p => p.player_id === playerId && p.match_id === matchId)?.predicted_winner || null
-  }
-
   return (
-    <div className="min-h-screen px-4 py-8">
-      <div className="max-w-screen-xl mx-auto">
+    <div style={{ minHeight: '100vh', background: '#060d1f', padding: '32px 16px' }}>
+      <div style={{ maxWidth: 900, margin: '0 auto' }}>
+
         {/* Header */}
-        <div className="text-center mb-8">
-          <div className="text-5xl mb-3">📊</div>
-          <h1 className="text-3xl font-bold text-white">Tüm Tahminler</h1>
-          <p className="text-gray-400 text-sm mt-1">{lockedPlayers.length} katılımcı</p>
+        <div style={{ textAlign: 'center', marginBottom: 28 }}>
+          <div style={{ fontSize: 40, marginBottom: 8 }}>📋</div>
+          <h1 style={{ color: '#e8edf5', fontSize: 24, fontWeight: 800, margin: '0 0 4px' }}>Tüm Tahminler</h1>
+          <p style={{ color: '#4a6090', fontSize: 13, margin: 0 }}>{players.length} katılımcı tahminini kilitledi</p>
         </div>
 
         {/* Nav */}
-        <div className="flex gap-3 mb-6 justify-center flex-wrap">
-          <Link href="/" className="text-sm text-gray-400 hover:text-white transition">🏠 Ana Sayfa</Link>
-          <Link href="/bracket" className="text-sm text-gray-400 hover:text-white transition">📋 Bracket</Link>
-          <Link href="/leaderboard" className="text-sm text-gray-400 hover:text-white transition">🏅 Lider</Link>
+        <div style={{ display: 'flex', gap: 20, justifyContent: 'center', marginBottom: 28 }}>
+          <Link href="/" style={{ fontSize: 13, color: '#4a6090', textDecoration: 'none' }}>🏠 Ana Sayfa</Link>
+          <Link href="/bracket" style={{ fontSize: 13, color: '#4a6090', textDecoration: 'none' }}>⚽ Bracket</Link>
+          <Link href="/leaderboard" style={{ fontSize: 13, color: '#4a6090', textDecoration: 'none' }}>🏅 Lider</Link>
         </div>
 
-        {/* Tur seçici */}
-        <div className="flex gap-2 mb-6 justify-center flex-wrap">
-          {rounds.map(r => (
-            <button
-              key={r}
-              onClick={() => setSelectedRound(r)}
-              className={`px-4 py-1.5 rounded-full text-sm font-medium transition ${
-                selectedRound === r
-                  ? 'bg-blue-600 text-white'
-                  : 'bg-white/10 text-gray-400 hover:bg-white/20'
-              }`}
-            >
-              {ROUND_LABELS[r]}
-            </button>
-          ))}
-        </div>
+        {/* Oyuncu kartları */}
+        {!selected && (
+          <>
+            {players.length === 0 ? (
+              <div style={{ textAlign: 'center', color: '#4a6090', padding: '60px 0' }}>
+                Henüz kimse tahminini kilitlemedi.
+              </div>
+            ) : (
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))', gap: 12 }}>
+                {players.map(p => (
+                  <button
+                    key={p.id}
+                    onClick={() => { setSelected(p); setSelectedRound('r32') }}
+                    style={{
+                      background: '#0a1628', border: '1px solid #1a2a4a',
+                      borderRadius: 16, padding: '20px 12px', cursor: 'pointer',
+                      display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 10,
+                      transition: 'border-color 0.15s, transform 0.15s',
+                    }}
+                    onMouseEnter={e => { e.currentTarget.style.borderColor = '#4a7fcb'; e.currentTarget.style.transform = 'translateY(-2px)' }}
+                    onMouseLeave={e => { e.currentTarget.style.borderColor = '#1a2a4a'; e.currentTarget.style.transform = 'translateY(0)' }}
+                  >
+                    <div style={{ width: 56, height: 56, borderRadius: '50%', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#060d1f', border: '2px solid #1e3060' }}>
+                      {p.avatar_url
+                        ? <img src={p.avatar_url} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                        : <span style={{ fontSize: 28 }}>{p.emoji || '⚽'}</span>
+                      }
+                    </div>
+                    <div style={{ color: '#e8edf5', fontWeight: 700, fontSize: 13, textAlign: 'center' }}>{p.nickname}</div>
+                    <div style={{ color: '#4a7fcb', fontSize: 11 }}>Bracket'i gör →</div>
+                  </button>
+                ))}
+              </div>
+            )}
+          </>
+        )}
 
-        {loading ? (
-          <div className="text-center text-gray-400 py-20">Yükleniyor...</div>
-        ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="border-b border-white/10">
-                  <th className="text-left py-3 px-3 text-gray-400 font-medium min-w-[120px]">Maç</th>
-                  {lockedPlayers.map(p => (
-                    <th key={p.id} className="py-3 px-3 text-center min-w-[100px]">
-                      <div className="text-xl">{p.emoji}</div>
-                      <div className="text-xs text-gray-300 font-medium">{p.nickname}</div>
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {roundMatches.map(match => (
-                  <tr key={match.id} className="border-b border-white/5 hover:bg-white/5">
-                    <td className="py-3 px-3">
-                      <div className="text-xs text-gray-500 mb-0.5">{ROUND_LABELS[match.round]}</div>
-                      <div className="font-medium text-white">
-                        {(FLAGS[match.team_a || ''] || '') + ' ' + (match.team_a || '?')}
-                        <span className="text-gray-500 mx-1">vs</span>
-                        {(FLAGS[match.team_b || ''] || '') + ' ' + (match.team_b || '?')}
+        {/* Seçili oyuncunun bracket'i */}
+        {selected && (
+          <div>
+            {/* Geri + oyuncu başlığı */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 24 }}>
+              <button
+                onClick={() => setSelected(null)}
+                style={{ background: '#0a1628', border: '1px solid #1a2a4a', color: '#8a9bbf', borderRadius: 10, padding: '8px 14px', cursor: 'pointer', fontSize: 13 }}
+              >
+                ← Geri
+              </button>
+              <div style={{ width: 44, height: 44, borderRadius: '50%', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#060d1f', border: '2px solid #1e3060' }}>
+                {selected.avatar_url
+                  ? <img src={selected.avatar_url} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  : <span style={{ fontSize: 26 }}>{selected.emoji || '⚽'}</span>
+                }
+              </div>
+              <div>
+                <div style={{ color: '#e8edf5', fontWeight: 800, fontSize: 18 }}>{selected.nickname}</div>
+                <div style={{ color: '#4a6090', fontSize: 12 }}>tahminleri</div>
+              </div>
+            </div>
+
+            {/* Tur seçici */}
+            <div style={{ display: 'flex', gap: 8, marginBottom: 20, flexWrap: 'wrap' }}>
+              {ROUNDS.map(r => (
+                <button
+                  key={r}
+                  onClick={() => setSelectedRound(r)}
+                  style={{
+                    padding: '7px 16px', borderRadius: 20, fontSize: 12, fontWeight: 600,
+                    cursor: 'pointer', border: 'none',
+                    background: selectedRound === r ? '#1d4ed8' : '#0a1628',
+                    color: selectedRound === r ? 'white' : '#4a6090',
+                    outline: selectedRound === r ? 'none' : '1px solid #1a2a4a'
+                  }}
+                >
+                  {ROUND_LABELS[r]}
+                </button>
+              ))}
+            </div>
+
+            {/* Maçlar */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+              {matches.filter(m => m.round === selectedRound).map(match => {
+                const pred = getPred(selected.id, match.id)
+                const isCorrect = match.winner && pred === match.winner
+                const isWrong = match.winner && pred && pred !== match.winner
+
+                return (
+                  <div key={match.id} style={{
+                    background: '#0a1628', border: '1px solid #1a2a4a',
+                    borderRadius: 12, padding: '14px 18px',
+                    display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, flexWrap: 'wrap'
+                  }}>
+                    {/* Maç */}
+                    <div>
+                      <div style={{ color: '#8a9bbf', fontSize: 13, fontWeight: 600 }}>
+                        {match.team_a || '?'} <span style={{ color: '#2a3a5c' }}>vs</span> {match.team_b || '?'}
                       </div>
                       {match.winner && (
-                        <div className="text-xs text-green-400 mt-0.5">✓ {match.winner} kazandı</div>
+                        <div style={{ color: '#2ed573', fontSize: 11, marginTop: 3 }}>✓ {match.winner} kazandı</div>
                       )}
-                    </td>
-                    {lockedPlayers.map(p => {
-                      const pred = getPrediction(p.id, match.id)
-                      const isCorrect = match.winner && pred === match.winner
-                      const isWrong = match.winner && pred && pred !== match.winner
-                      return (
-                        <td key={p.id} className="py-3 px-3 text-center">
-                          {pred ? (
-                            <div className={`inline-flex items-center gap-1 px-2 py-1 rounded-lg text-xs font-medium ${
-                              isCorrect ? 'bg-green-500/20 text-green-400' :
-                              isWrong ? 'bg-red-500/20 text-red-400' :
-                              'bg-white/10 text-gray-300'
-                            }`}>
-                              {FLAGS[pred] || ''} {pred}
-                            </div>
-                          ) : (
-                            <span className="text-gray-600 text-xs">—</span>
-                          )}
-                        </td>
-                      )
-                    })}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+                    </div>
+
+                    {/* Tahmin */}
+                    <div style={{
+                      padding: '6px 14px', borderRadius: 8, fontSize: 13, fontWeight: 700,
+                      background: isCorrect ? 'rgba(46,213,115,0.15)' : isWrong ? 'rgba(231,76,60,0.15)' : 'rgba(74,127,203,0.1)',
+                      color: isCorrect ? '#2ed573' : isWrong ? '#e74c3c' : '#8a9bbf',
+                      border: `1px solid ${isCorrect ? 'rgba(46,213,115,0.3)' : isWrong ? 'rgba(231,76,60,0.3)' : '#1a2a4a'}`
+                    }}>
+                      {pred || '—'}
+                      {isCorrect && ' ✓'}
+                      {isWrong && ' ✗'}
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
           </div>
         )}
       </div>
