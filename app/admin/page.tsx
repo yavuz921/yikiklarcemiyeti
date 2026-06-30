@@ -18,6 +18,19 @@ async function adminPost(action: string, extra?: Record<string, unknown>) {
   return res.json()
 }
 
+function resolveTeam(matchId: number | null, matches: Match[]): string | null {
+  if (!matchId) return null
+  const m = matches.find(x => x.id === matchId)
+  if (!m) return null
+  return m.winner || null
+}
+
+function getTeams(match: Match, matches: Match[]): { tA: string | null, tB: string | null } {
+  const tA = match.left_from_match ? resolveTeam(match.left_from_match, matches) : match.team_a
+  const tB = match.right_from_match ? resolveTeam(match.right_from_match, matches) : match.team_b
+  return { tA: tA || null, tB: tB || null }
+}
+
 function AdminContent() {
   const params = useSearchParams()
   const key = params.get('key')
@@ -161,17 +174,19 @@ function AdminContent() {
                     const hasPending = pending[match.id] !== undefined
                     const selected = pending[match.id]
                     const confirmed = match.winner
+                    const { tA, tB } = getTeams(match, matches)
 
                     return (
                       <div key={match.id} style={{
                         background: '#060d1f',
-                        border: `1px solid ${hasPending ? '#4a7fcb' : confirmed ? '#1a4a2a' : '#1a2a4a'}`,
-                        borderRadius: 12, padding: '14px 16px'
+                        border: `1px solid ${hasPending ? '#4a7fcb' : confirmed ? '#1a4a2a' : (!tA || !tB) ? '#0f1a2a' : '#1a2a4a'}`,
+                        borderRadius: 12, padding: '14px 16px',
+                        opacity: (!tA || !tB) && !confirmed ? 0.5 : 1
                       }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10 }}>
                           <span style={{ color: '#4a6090', fontSize: 11 }}>#{match.id}</span>
                           <span style={{ color: '#8a9bbf', fontSize: 13 }}>
-                            {match.team_a || '?'} <span style={{ color: '#2a3a5c' }}>vs</span> {match.team_b || '?'}
+                            {tA || '?'} <span style={{ color: '#2a3a5c' }}>vs</span> {tB || '?'}
                           </span>
                           {confirmed && !hasPending && (
                             <span style={{ color: '#2ed573', fontSize: 12, fontWeight: 700, marginLeft: 4 }}>✓ {confirmed}</span>
@@ -182,7 +197,7 @@ function AdminContent() {
                         </div>
 
                         <div style={{ display: 'flex', gap: 8, alignItems: 'center', flexWrap: 'wrap' }}>
-                          {[match.team_a, match.team_b].filter(Boolean).map(team => {
+                          {[tA, tB].filter(Boolean).map(team => {
                             const isSelected = selected === team
                             const isConfirmed = confirmed === team && !hasPending
                             return (
