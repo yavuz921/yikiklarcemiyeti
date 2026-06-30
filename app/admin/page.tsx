@@ -10,7 +10,7 @@ const ROUND_LABELS: Record<string, string> = {
 }
 
 async function adminPost(action: string, extra?: Record<string, unknown>) {
-  const res = await fetch('/api/admin-action?key=yikilarcemiyeti2026', {
+  const res = await fetch('/api/admin-action?key=yavuz1722', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ action, ...extra })
@@ -43,7 +43,7 @@ function AdminContent() {
   const [pending, setPending] = useState<Record<number, string>>({})
 
   useEffect(() => {
-    if (key === 'yikilarcemiyeti2026') {
+    if (key === 'yavuz1722') {
       setAuthed(true)
       loadData()
     }
@@ -97,7 +97,7 @@ function AdminContent() {
         <div style={{ textAlign: 'center' }}>
           <div style={{ fontSize: 52, marginBottom: 16 }}>🔐</div>
           <div style={{ color: '#e8edf5', fontSize: 20, fontWeight: 700 }}>Yetkisiz Erişim</div>
-          <div style={{ color: '#4a6090', marginTop: 8 }}>URL'ye ?key=yikilarcemiyeti2026 eklemen gerekiyor</div>
+          <div style={{ color: '#4a6090', marginTop: 8 }}>Yetkisiz erişim.</div>
         </div>
       </div>
     )

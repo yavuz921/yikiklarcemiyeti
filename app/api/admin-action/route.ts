@@ -5,7 +5,7 @@ const POINTS: Record<string, number> = { r32: 1, r16: 2, qf: 4, sf: 8, final: 16
 
 const SUPABASE_URL = 'https://gtyodeljhewwqwinnnxl.supabase.co'
 const SUPABASE_SERVICE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd0eW9kZWxqaGV3d3F3aW5ubnhsIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4Mjc2OTg2OSwiZXhwIjoyMDk4MzQ1ODY5fQ.957e_MTAymJKMfmZzBjnOSmQldYy7fwgz2jz-roiAd8'
-const ADMIN_SECRET = 'yikilarcemiyeti2026'
+const ADMIN_SECRET = 'yavuz1722'
 
 function adminClient() {
   return createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY)
