@@ -87,7 +87,11 @@ export default function PlayerBracketPage() {
         })}
       </div>
     )
-    const connector = showConnector ? <Connectors count={ids.length} gap={gap} side={side} /> : null
+    const connector = showConnector ? (
+      <div style={{ marginTop: topOffset }}>
+        <Connectors count={ids.length} gap={gap} side={side} />
+      </div>
+    ) : null
     return (
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', flexShrink: 0 }}>
         <div style={{ fontSize: 10, fontWeight: 700, color: '#4a7fcb', letterSpacing: 2, marginBottom: 10, whiteSpace: 'nowrap' }}>

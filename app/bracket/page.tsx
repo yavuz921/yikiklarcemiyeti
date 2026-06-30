@@ -147,7 +147,9 @@ export default function BracketPage() {
     )
 
     const connector = showConnector ? (
-      <Connectors count={ids.length} gap={gap} side={side} />
+      <div style={{ marginTop: topOffset }}>
+        <Connectors count={ids.length} gap={gap} side={side} />
+      </div>
     ) : null
 
     return (
