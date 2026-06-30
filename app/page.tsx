@@ -182,7 +182,7 @@ export default function HomePage() {
           {/* Nickname */}
           <div style={{ flex: 1 }}>
             <div style={{ fontSize: 11, color: '#4a6090', fontWeight: 700, letterSpacing: 1, marginBottom: 8 }}>
-              NİCK
+              NICK
             </div>
             <input
               type="text"
