@@ -82,7 +82,8 @@ export default function HomePage() {
 
       router.push('/bracket')
     } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : 'Bir hata oluştu.')
+      const e = err as {message?: string; details?: string; code?: string}
+      setError(e?.message || e?.details || e?.code || 'Bir hata oluştu.')
     } finally {
       setLoading(false)
     }
