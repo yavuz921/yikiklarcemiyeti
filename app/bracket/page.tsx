@@ -34,6 +34,21 @@ export default function BracketPage() {
     load(id)
   }, [router])
 
+  useEffect(() => {
+    function scaleBracket() {
+      const el = document.getElementById('bracket-inner')
+      if (!el) return
+      const available = window.innerWidth - 80
+      const natural = el.scrollWidth
+      const scale = natural > available ? available / natural : 1
+      el.style.transform = `scale(${scale})`
+      el.style.marginBottom = scale < 1 ? `${(el.scrollHeight * scale - el.scrollHeight)}px` : '0'
+    }
+    scaleBracket()
+    window.addEventListener('resize', scaleBracket)
+    return () => window.removeEventListener('resize', scaleBracket)
+  }, [matches])
+
   async function load(id: string) {
     const [m, p, pl, s] = await Promise.all([
       supabase.from('matches').select('*').order('id'),
@@ -235,7 +250,7 @@ export default function BracketPage() {
 
       {/* ── BRACKET ── */}
       <div style={{ overflowX: 'auto', padding: '20px 40px 80px' }}>
-        <div style={{ display: 'inline-flex', alignItems: 'flex-start', gap: 0, minWidth: 'max-content' }}>
+        <div id="bracket-inner" style={{ display: 'inline-flex', alignItems: 'flex-start', gap: 0, minWidth: 'max-content', transformOrigin: 'top left' }}>
 
           {/* SOL R32 */}
           <Col ids={[1, 2, 3, 4, 5, 6, 7, 8]} label="ROUND OF 32" side="left" gap={CGAP} />
