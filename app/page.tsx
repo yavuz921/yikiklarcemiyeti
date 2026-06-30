@@ -182,14 +182,14 @@ export default function HomePage() {
           {/* Nickname */}
           <div style={{ flex: 1 }}>
             <div style={{ fontSize: 11, color: '#4a6090', fontWeight: 700, letterSpacing: 1, marginBottom: 8 }}>
-              NİCKNAME
+              NİCK
             </div>
             <input
               type="text"
               value={nickname}
               onChange={e => setNickname(e.target.value)}
               onKeyDown={e => e.key === 'Enter' && handleJoin()}
-              placeholder="örn: KralYavuz"
+              placeholder="örn: Coniletto"
               maxLength={20}
               style={{
                 width: '100%', background: '#060d1f',
