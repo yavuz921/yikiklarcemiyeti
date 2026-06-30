@@ -285,14 +285,14 @@ export default function BracketPage() {
             }}>
               {/* Logo */}
               <div style={{ marginBottom: 12 }}>
-                <div style={{ fontSize: 11, color: '#4a7fcb', fontWeight: 700, letterSpacing: 3 }}>FIFA</div>
+                <div style={{ fontSize: 11, color: '#4a7fcb', fontWeight: 700, letterSpacing: 3, marginBottom: 6 }}>FIFA</div>
                 <div style={{
                   fontSize: 52, fontWeight: 900, lineHeight: 1,
                   background: 'linear-gradient(135deg, #f0b429, #fff, #f0b429)',
                   WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
                   letterSpacing: -2,
                 }}>26</div>
-                <div style={{ fontSize: 9, color: '#4a6090', fontWeight: 700, letterSpacing: 4, marginTop: -4 }}>WORLD CUP</div>
+                <div style={{ fontSize: 9, color: '#4a6090', fontWeight: 700, letterSpacing: 4, marginTop: 6 }}>WORLD CUP</div>
               </div>
 
               {/* Finalist bayrakları */}
