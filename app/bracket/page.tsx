@@ -259,23 +259,23 @@ export default function BracketPage() {
 
           {/* SOL R16 */}
           <Col ids={[17, 18, 19, 20]} label="ROUND OF 16" side="left"
-            gap={CH + CGAP * 3}
+            gap={CH + CGAP * 2}
             topOffset={(CH + CGAP) / 2} />
 
           {/* SOL QF */}
           <Col ids={[25, 26]} label="QUARTER FINALS" side="left"
-            gap={(CH + CGAP) * 4 + CH}
-            topOffset={(CH + CGAP) * 1.5 + CGAP} />
+            gap={(CH + CGAP) * 4 - CH}
+            topOffset={(CH + CGAP) * 1.5} />
 
           {/* SOL SF */}
           <Col ids={[29]} label="SEMI FINALS" side="left" showConnector={false}
-            topOffset={(CH + CGAP) * 3.5 + CGAP * 2} />
+            topOffset={(CH + CGAP) * 3.5} />
 
           {/* ── FİNAL ORTASI ── */}
           <div style={{
             display: 'flex', flexDirection: 'column', alignItems: 'center',
             flexShrink: 0, width: 260,
-            paddingTop: (CH + CGAP) * 3.5 + CGAP * 2,
+            paddingTop: (CH + CGAP) * 3.5,
           }}>
             {/* FIFA WC 2026 Logo alanı */}
             <div style={{
@@ -362,16 +362,16 @@ export default function BracketPage() {
 
           {/* SAĞ SF */}
           <Col ids={[30]} label="SEMI FINALS" side="right" showConnector={false}
-            topOffset={(CH + CGAP) * 3.5 + CGAP * 2} />
+            topOffset={(CH + CGAP) * 3.5} />
 
           {/* SAĞ QF */}
           <Col ids={[27, 28]} label="QUARTER FINALS" side="right"
-            gap={(CH + CGAP) * 4 + CH}
-            topOffset={(CH + CGAP) * 1.5 + CGAP} />
+            gap={(CH + CGAP) * 4 - CH}
+            topOffset={(CH + CGAP) * 1.5} />
 
           {/* SAĞ R16 */}
           <Col ids={[21, 22, 23, 24]} label="ROUND OF 16" side="right"
-            gap={CH + CGAP * 3}
+            gap={CH + CGAP * 2}
             topOffset={(CH + CGAP) / 2} />
 
           {/* SAĞ R32 */}

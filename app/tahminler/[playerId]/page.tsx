@@ -150,12 +150,12 @@ export default function PlayerBracketPage() {
       <div style={{ overflowX: 'auto', padding: '20px 40px 80px' }}>
         <div style={{ display: 'inline-flex', alignItems: 'flex-start', gap: 0, minWidth: 'max-content' }}>
           <Col ids={[1,2,3,4,5,6,7,8]} label="ROUND OF 32" side="left" gap={CGAP} />
-          <Col ids={[17,18,19,20]} label="ROUND OF 16" side="left" gap={CH+CGAP*3} topOffset={(CH+CGAP)/2} />
-          <Col ids={[25,26]} label="QUARTER FINALS" side="left" gap={(CH+CGAP)*4+CH} topOffset={(CH+CGAP)*1.5+CGAP} />
-          <Col ids={[29]} label="SEMI FINALS" side="left" showConnector={false} topOffset={(CH+CGAP)*3.5+CGAP*2} />
+          <Col ids={[17,18,19,20]} label="ROUND OF 16" side="left" gap={CH+CGAP*2} topOffset={(CH+CGAP)/2} />
+          <Col ids={[25,26]} label="QUARTER FINALS" side="left" gap={(CH+CGAP)*4-CH} topOffset={(CH+CGAP)*1.5} />
+          <Col ids={[29]} label="SEMI FINALS" side="left" showConnector={false} topOffset={(CH+CGAP)*3.5} />
 
           {/* Final ortası */}
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', flexShrink: 0, width: 260, paddingTop: (CH+CGAP)*3.5+CGAP*2 }}>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', flexShrink: 0, width: 260, paddingTop: (CH+CGAP)*3.5 }}>
             <div style={{
               background: 'linear-gradient(160deg, #0a1428 0%, #0f1e3a 50%, #0a1428 100%)',
               border: '1px solid #1a3060', borderRadius: 16, padding: '18px 24px',
@@ -203,9 +203,9 @@ export default function PlayerBracketPage() {
             </div>
           </div>
 
-          <Col ids={[30]} label="SEMI FINALS" side="right" showConnector={false} topOffset={(CH+CGAP)*3.5+CGAP*2} />
-          <Col ids={[27,28]} label="QUARTER FINALS" side="right" gap={(CH+CGAP)*4+CH} topOffset={(CH+CGAP)*1.5+CGAP} />
-          <Col ids={[21,22,23,24]} label="ROUND OF 16" side="right" gap={CH+CGAP*3} topOffset={(CH+CGAP)/2} />
+          <Col ids={[30]} label="SEMI FINALS" side="right" showConnector={false} topOffset={(CH+CGAP)*3.5} />
+          <Col ids={[27,28]} label="QUARTER FINALS" side="right" gap={(CH+CGAP)*4-CH} topOffset={(CH+CGAP)*1.5} />
+          <Col ids={[21,22,23,24]} label="ROUND OF 16" side="right" gap={CH+CGAP*2} topOffset={(CH+CGAP)/2} />
           <Col ids={[9,10,11,12,13,14,15,16]} label="ROUND OF 32" side="right" gap={CGAP} />
         </div>
       </div>
