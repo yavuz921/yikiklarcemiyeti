@@ -22,6 +22,7 @@ export default function BracketPage() {
   const [pid, setPid] = useState<string | null>(null)
   const [nick, setNick] = useState('')
   const [emo, setEmo] = useState('⚽')
+  const [avatar, setAvatar] = useState<string | null>(null)
 
   useEffect(() => {
     const id = localStorage.getItem('wc_player_id')
@@ -29,6 +30,7 @@ export default function BracketPage() {
     setPid(id)
     setNick(localStorage.getItem('wc_nickname') || '')
     setEmo(localStorage.getItem('wc_emoji') || '⚽')
+    setAvatar(localStorage.getItem('wc_avatar'))
     load(id)
   }, [router])
 
@@ -165,7 +167,12 @@ export default function BracketPage() {
         display: 'flex', alignItems: 'center', justifyContent: 'space-between'
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-          <span style={{ fontSize: 26 }}>{emo}</span>
+          <div style={{ width: 36, height: 36, borderRadius: '50%', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#0a1628', border: '2px solid #1e3060', flexShrink: 0 }}>
+            {avatar
+              ? <img src={avatar} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+              : <span style={{ fontSize: 22 }}>{emo}</span>
+            }
+          </div>
           <div>
             <div style={{ fontWeight: 700, color: '#dde8ff', fontSize: 15 }}>{nick}</div>
             <div style={{ fontSize: 11, color: '#4a6090' }}>
