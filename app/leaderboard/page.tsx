@@ -43,6 +43,25 @@ export default function LeaderboardPage() {
           <p style={{ color: '#8a9bbf', fontSize: '13px', marginTop: '6px' }}>Gerçek zamanlı güncellenir</p>
         </div>
 
+        {/* Ödül */}
+        <div style={{
+          background: 'linear-gradient(135deg, #0a1628, #0f1e3a)',
+          border: '1px solid #f0b42944',
+          borderRadius: 20, padding: '20px 24px',
+          marginBottom: 28, display: 'flex', alignItems: 'center', gap: 20
+        }}>
+          <img
+            src="https://vozolpremiumx.com/wp-content/uploads/2026/06/vozol-star-40000-blueberry-mint.jpg.webp"
+            alt="Vozol Star 40000"
+            style={{ width: 80, height: 80, objectFit: 'contain', borderRadius: 12, flexShrink: 0 }}
+          />
+          <div>
+            <div style={{ fontSize: 11, color: '#f0b429', fontWeight: 800, letterSpacing: 2, marginBottom: 4 }}>🥇 BİRİNCİYE ÖDÜL</div>
+            <div style={{ fontSize: 20, fontWeight: 800, color: '#e8edf5' }}>Vozol Star 40000</div>
+            <div style={{ fontSize: 12, color: '#4a6090', marginTop: 4 }}>Turnuva sonunda en yüksek puana sahip kişi kazanır</div>
+          </div>
+        </div>
+
         {/* Nav */}
         <div style={{ display: 'flex', gap: '20px', justifyContent: 'center', marginBottom: '28px' }}>
           <Link href="/" style={{ fontSize: '13px', color: '#8a9bbf', textDecoration: 'none' }}>🏠 Ana Sayfa</Link>
