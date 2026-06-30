@@ -263,7 +263,7 @@ export default function HomePage() {
             transition: 'all 0.2s', letterSpacing: 0.3,
           }}
         >
-          {loading ? 'Giriliyyor...' : '🏆  Tahmine Başla'}
+          {loading ? 'Giriliyor...' : '🏆  Tahmine Başla'}
         </button>
 
         <p style={{ textAlign: 'center', fontSize: 11, color: '#1e3060', marginTop: 14, marginBottom: 0 }}>
