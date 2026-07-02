@@ -112,25 +112,30 @@ export default function MatchCard({ match, predA, predB, teamA, teamB, onSelect,
   return (
     <div style={{
       width: 180,
+      height: 72,
       background: '#0c1530',
       border: `1px solid ${played ? '#8B0000' : canPick ? '#2a4070' : '#1a2844'}`,
       borderRadius: 8,
       overflow: 'hidden',
       boxShadow: canPick ? '0 0 0 1px rgba(74,144,226,0.1)' : 'none',
+      display: 'flex', flexDirection: 'column',
     }}>
       {played && (
         <div style={{
           background: 'linear-gradient(90deg, #7b0000, #a00000)',
-          padding: '2px 8px',
+          padding: '1px 8px',
           display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+          flexShrink: 0, height: 14,
         }}>
-          <span style={{ fontSize: 8.5, color: '#ffaaaa', fontWeight: 700, letterSpacing: 1 }}>PLAYED</span>
-          <span style={{ fontSize: 8.5, color: '#ffcccc', fontWeight: 600 }}>{match.winner?.toUpperCase()} WON</span>
+          <span style={{ fontSize: 7.5, color: '#ffaaaa', fontWeight: 700, letterSpacing: 1 }}>PLAYED</span>
+          <span style={{ fontSize: 7.5, color: '#ffcccc', fontWeight: 600 }}>{match.winner?.toUpperCase()} WON</span>
         </div>
       )}
-      <Row team={teamA || ''} selected={predA} won={match.winner === teamA} />
-      <div style={{ height: 1, background: '#1a2844' }} />
-      <Row team={teamB || ''} selected={predB} won={match.winner === teamB} />
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+        <Row team={teamA || ''} selected={predA} won={match.winner === teamA} />
+        <div style={{ height: 1, background: '#1a2844', flexShrink: 0 }} />
+        <Row team={teamB || ''} selected={predB} won={match.winner === teamB} />
+      </div>
     </div>
   )
 }
